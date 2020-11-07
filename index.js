@@ -2,7 +2,7 @@ window.addEventListener("load", () => {
   const todoList = document.querySelector("#todo-list")
   // 로컬 스토리지에 todos가 존재하면 그 데이터를 가져온다.
   let todos = localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos")) : []
-  let id = localStorage.getItem("todos") ? todos[todos.length - 1].id + 1 : 1
+  let id = JSON.parse(localStorage.getItem("todos")).length > 0 ? todos[todos.length - 1].id + 1 : 1
 
   function addTodo() {
     const todoInput = document.querySelector(".todo__input")
@@ -29,9 +29,19 @@ window.addEventListener("load", () => {
   function createTodoItem(parent, todo) {
     const todoText = document.createElement("span")
     todoText.innerText = todo.text
+    const deleteText = document.createElement("i")
+    deleteText.className = "fas fa-trash-alt"
     const deleteBtn = document.createElement("button")
-    deleteBtn.innerText = "delete"
+    deleteBtn.className = "delete"
+    deleteBtn.appendChild(deleteText)
+    const modifyText = document.createElement("i")
+    modifyText.className = "fas fa-tools"
+    const modifyBtn = document.createElement("button")
+    modifyBtn.appendChild(modifyText)
+    modifyBtn.className = "modify"
+
     const li = document.createElement("li")
+    li.appendChild(modifyBtn)
     li.appendChild(todoText)
     li.appendChild(deleteBtn)
     li.id = todo.id

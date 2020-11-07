@@ -36,17 +36,43 @@ body {
 #todo-form > button {
   border: none;
   color: #fff;
-  background: #007f00;
+  background: #24a5ed;
   padding: 10px 20px;
 }
 #todo-list {
   margin-left: 200px;
+}
+#todo-list > li {
+  position: relative;
+  padding-left: 30px;
 }
 #todo-list > li + li {
   margin-top: 10px;
 }
 #todo-list > li span {
   margin-right: 20px;
+  font-size: 1.4em;
+}
+#todo-list > li .modify {
+  border: none;
+  background: #007f00;
+  color: #fff;
+  margin-right: 10px;
+  padding: 4px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+#todo-list > li .delete {
+  border: none;
+  background: #ff0000;
+  color: #fff;
+  padding: 4px;
+  position: absolute;
+  right: 40%;
+  top: 50%;
+  transform: translate(0, -50%);
 }
 .complete {
   text-decoration: line-through;

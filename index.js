@@ -37,6 +37,7 @@ window.addEventListener("load", () => {
     li.id = todo.id
     parent.appendChild(li)
 
+    // 완료 여부 체크 이벤트
     todoText.addEventListener("click", function () {
       const itemId = this.parentNode.id
       completeTodo(itemId)
@@ -51,6 +52,7 @@ window.addEventListener("load", () => {
       }
     })
 
+    // 요소 제거 이벤트
     deleteBtn.addEventListener("click", function () {
       const itemId = this.parentNode.id
       deleteTodo(itemId)

@@ -37,7 +37,21 @@ window.addEventListener("load", () => {
     li.id = todo.id
     parent.appendChild(li)
 
-    deleteBtn.addEventListener("click", function (event) {
+    todoText.addEventListener("click", function () {
+      const itemId = this.parentNode.id
+      completeTodo(itemId)
+
+      // 할일 완료
+      if (this.className === "") {
+        this.className = "complete"
+
+        // 할일 아직 완료되지 않음
+      } else {
+        this.className = ""
+      }
+    })
+
+    deleteBtn.addEventListener("click", function () {
       const itemId = this.parentNode.id
       deleteTodo(itemId)
     })
@@ -65,6 +79,14 @@ window.addEventListener("load", () => {
     }
     // 화면에서 delete 된 요소 제거
     todoList.removeChild(todoItemNodes[targetIndex])
+    // 로컬 스토리지에도 반영
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }
+
+  function completeTodo(id) {
+    // 데이터에서 완료 여부 조작
+    todos = todos.map((todo) => (todo.id === parseInt(id, 10) ? { ...todo, done: !todo.done } : todo))
+
     // 로컬 스토리지에도 반영
     localStorage.setItem("todos", JSON.stringify(todos))
   }

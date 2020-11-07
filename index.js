@@ -1,5 +1,6 @@
 window.addEventListener("load", () => {
   const todoList = document.querySelector("#todo-list")
+  // 로컬 스토리지에 todos가 존재하면 그 데이터를 가져온다.
   let todos = localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos")) : []
   let id = localStorage.getItem("todos") ? todos[todos.length - 1].id + 1 : 1
 
@@ -26,15 +27,20 @@ window.addEventListener("load", () => {
 
   // todos data를 바탕으로 li 요소 생성해서 todo-list에 추가
   function createTodoItem(parent, todo) {
-    const span = document.createElement("span")
-    span.innerText = todo.text
+    const todoText = document.createElement("span")
+    todoText.innerText = todo.text
     const deleteBtn = document.createElement("button")
     deleteBtn.innerText = "delete"
     const li = document.createElement("li")
-    li.appendChild(span)
+    li.appendChild(todoText)
     li.appendChild(deleteBtn)
-    li.id = "item" + todo.id
+    li.id = todo.id
     parent.appendChild(li)
+
+    deleteBtn.addEventListener("click", function (event) {
+      const itemId = this.parentNode.id
+      deleteTodo(itemId)
+    })
   }
 
   // 리로딩 시 로컬 스토리지에 저장되어 있는 todos 데이터 이용하여 todoList 출력
@@ -42,6 +48,25 @@ window.addEventListener("load", () => {
     todos.forEach((todo) => {
       createTodoItem(todoList, todo)
     })
+  }
+
+  function deleteTodo(id) {
+    // 데이터에서 delete된 요소 제거
+    todos = todos.filter((todo) => todo.id != parseInt(id, 10))
+
+    // childNodes 중에서 id 값을 이용해서 제거할 자식 요소를 찾는다.
+    const todoItemNodes = todoList.childNodes
+    let targetIndex = 0
+    for (let i = 0; i < todoItemNodes.length; i++) {
+      if (todoItemNodes[i].id === id) {
+        targetIndex = i
+        break
+      }
+    }
+    // 화면에서 delete 된 요소 제거
+    todoList.removeChild(todoItemNodes[targetIndex])
+    // 로컬 스토리지에도 반영
+    localStorage.setItem("todos", JSON.stringify(todos))
   }
 
   showTodos()

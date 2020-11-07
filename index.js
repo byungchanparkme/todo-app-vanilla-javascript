@@ -3,25 +3,28 @@ window.addEventListener("load", () => {
   // 로컬 스토리지에 todos가 존재하면 그 데이터를 가져온다.
   let todos = localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos")) : []
   let id = JSON.parse(localStorage.getItem("todos")).length > 0 ? todos[todos.length - 1].id + 1 : 1
+  let mode = "read"
 
   function addTodo() {
     const todoInput = document.querySelector(".todo__input")
     const todoForm = document.querySelector("#todo-form")
 
     todoForm.addEventListener("submit", (event) => {
-      // prevent reloading
-      event.preventDefault()
-      const todo = { id: id++, text: todoInput.value, done: false }
-      // add todo data in the todos array
-      todos.push(todo)
-      // store todos data in the localStorage
-      localStorage.setItem("todos", JSON.stringify(todos))
+      if (mode === "read") {
+        // prevent reloading
+        event.preventDefault()
+        const todo = { id: id++, text: todoInput.value, done: false }
+        // add todo data in the todos array
+        todos.push(todo)
+        // store todos data in the localStorage
+        localStorage.setItem("todos", JSON.stringify(todos))
 
-      // reset input value
-      todoInput.value = ""
+        // reset input value
+        todoInput.value = ""
 
-      // 새로 추가되는 todo item을 화면에 보여준다.
-      createTodoItem(todoList, todo)
+        // 새로 추가되는 todo item을 화면에 보여준다.
+        createTodoItem(todoList, todo)
+      }
     })
   }
 
@@ -46,6 +49,53 @@ window.addEventListener("load", () => {
     li.appendChild(deleteBtn)
     li.id = todo.id
     parent.appendChild(li)
+
+    // 수정 모드 이벤트
+    modifyBtn.addEventListener("click", function () {
+      const itemId = this.parentNode.id
+      const todoInput = document.querySelector(".todo__input")
+      const todoForm = document.querySelector("#todo-form")
+      // mode가 modify mode로 바뀐다.
+      // 수정 모드로 변경되었습니다라는 경고창을 띄워준다.
+      alert("수정 모드로 변경되었습니다.")
+      mode = "modify"
+      // input에 해당 text가 보인다.
+      let target = todos.filter((todo) => todo.id === parseInt(itemId, 10))[0]
+      todoInput.value = target.text
+
+      // input value를 입력하고 Add 버튼 누르면
+      todoForm.addEventListener("submit", function (event) {
+        if (mode === "modify") {
+          event.preventDefault()
+          const todoInput = document.querySelector(".todo__input")
+
+          // 수정한 input value를 어떻게 가져올 것인가?
+          // todos 배열에 있는 텍스트도 수정된다.
+          todos = todos.map((todo) => (todo.id === parseInt(itemId, 10) ? { id: todo.id, text: todoInput.value, done: false } : todo))
+
+          // 화면에 있는 해당 todo의 텍스트가 수정된다.
+          // childNodes 중에서 id 값을 이용해서 제거할 자식 요소를 찾는다.
+          const todoItemNodes = todoList.childNodes
+          let targetIndex = 0
+          for (let i = 0; i < todoItemNodes.length; i++) {
+            if (todoItemNodes[i].id === itemId) {
+              targetIndex = i
+              break
+            }
+          }
+
+          const span = document.createElement("span")
+          span.innerText = todoInput.value
+          todoItemNodes[targetIndex].replaceChild(span, todoItemNodes[targetIndex].childNodes[1])
+          // 로컬 스토리지에 반영된다.
+          localStorage.setItem("todos", JSON.stringify(todos))
+          // reset input value
+          todoInput.value = ""
+          mode = "read"
+          alert("다시 읽기 모드로 변경합니다.")
+        }
+      })
+    })
 
     // 완료 여부 체크 이벤트
     todoText.addEventListener("click", function () {

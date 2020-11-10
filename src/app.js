@@ -1,100 +1,5 @@
-class TodoItem {
-  constructor(id, text, done, color) {
-    this.id = id
-    this.text = text
-    this.done = done
-    this.color = color
-  }
-  toggle() {
-    this.done = !this.done
-  }
-}
-
-class TodosManager {
-  constructor(todos = []) {
-    this._todos = []
-    this._id = 1
-    todos.forEach((todo) => {
-      this.addTodo(todo.text, todo.done, todo.color)
-    })
-  }
-
-  addTodo(text, done = false, color = "#000") {
-    const newTodo = new TodoItem(this._id, text, done, color)
-    this._todos.push(newTodo)
-    this._id++
-    return newTodo
-  }
-
-  updateTodo(id, text) {
-    this._todos = this._todos.map((todo) => (todo.id === parseInt(id, 10) ? { ...todo, text } : todo))
-  }
-
-  deleteTodo(id) {
-    this._todos = this._todos.filter((todo) => todo.id !== parseInt(id, 10))
-  }
-
-  getList() {
-    return this._todos
-  }
-
-  get leftTodos() {
-    return this._todos.reduce((p, c) => {
-      return !c.done ? ++p : p
-    }, 0)
-  }
-}
-
-class ColorPalette {
-  constructor(colors) {
-    this._colors = []
-    colors.forEach((color) => {
-      this._colors.push(color)
-    })
-  }
-
-  getColors() {
-    return this._colors
-  }
-}
-
-class TodosManagerWithLocalStorage extends TodosManager {
-  static get STORAGE_KEY() {
-    return "todos"
-  }
-
-  constructor() {
-    const todosJSON = localStorage.getItem(TodosManagerWithLocalStorage.STORAGE_KEY)
-    const todos = todosJSON ? JSON.parse(todosJSON) : []
-    super(todos)
-  }
-
-  addTodo(text, done = false, color = "#000") {
-    const newTodo = super.addTodo(text, done, color)
-    const original = newTodo.toggle
-    newTodo.toggle = () => {
-      original.apply(newTodo)
-      this.saveToLocalStorage()
-    }
-    this.saveToLocalStorage()
-    return newTodo
-  }
-
-  deleteTodo(id) {
-    super.deleteTodo(id)
-    this.saveToLocalStorage()
-  }
-
-  updateTodo(id, text) {
-    super.updateTodo(id, text)
-    this.saveToLocalStorage()
-  }
-
-  saveToLocalStorage() {
-    const todosJSON = JSON.stringify(this._todos)
-    localStorage.setItem(TodosManagerWithLocalStorage.STORAGE_KEY, todosJSON)
-  }
-}
+import { ColorPalette } from "./models.js"
+import { TodosManagerWithLocalStorage } from "./TodosManagerWithLocalStorage.js"
 
 class TodoApp {
   constructor(todos, colors) {
@@ -216,7 +121,7 @@ class TodoApp {
               if (this.clickedId) {
                 const targetTodo = this.todosManager.getList().filter((todo) => todo.id === parseInt(this.clickedId, 10))[0]
                 targetTodo.color = this.clickedColor
-                this.renderTodos() 
+                this.renderTodos()
                 this.clickedId = ""
               }
             }
@@ -226,3 +131,5 @@ class TodoApp {
     })
   }
 }
+
+export default TodoApp

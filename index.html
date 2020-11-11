@@ -4,26 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo App by Vanilla JavaScript</title>
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
   <script src="https://kit.fontawesome.com/0e5a8c1c44.js" crossorigin="anonymous"></script>
   <script type="module" src="./src/index.js"></script>
 </head>
 <body>
   <div class="todo-container">
-    <header class="todo-title">
-      <h1>Todo List</h1>
-      <h2>11월 10일</h2>
+    <header class="todo-header">
+      <div class="clear">
+        <i class="fas fa-sync reset-todos"></i>
+      </div>
+      <h2 id="date">11월 10일</h2>
     </header>
+
     <div class="palette">
 
     </div>
+    <div class="content">
+      <ul id="todo-list">
+      </ul>
+    </div>
     <form id="todo-form">
-      <p>오늘의 할 일을 입력하세요</p>
-      <input type="text" class="todo__input"/>
-      <button type="submit">Add</button>
+      <button type="submit">+</button>
+      <input type="text" class="todo__input" placeholder="Add a to-do" />
     </form>
-    <ul id="todo-list">
-    </ul>
+    
   </div>
 </body>
 </html>

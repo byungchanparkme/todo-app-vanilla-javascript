@@ -12,9 +12,10 @@ class TodoApp {
     // 우리가 참조할 DOM 요소들
     this.paletteEl = document.querySelector(".palette")
     this.todoListEl = document.querySelector("#todo-list")
-    this.subTitleEl = document.querySelector(".todo-title h2")
+    this.subTitleEl = document.querySelector("#date")
     this.addTodoFormEl = document.querySelector("#todo-form")
     this.inputEl = document.querySelector(".todo__input")
+    this.resetBtnEl = document.querySelector(".clear .reset-todos")
     // todos 데이터에 변화가 생길 때마다 화면을 리렌더링해준다.
     this.renderTodos()
     // 사용자의 입력에 대한 응답 담당(DOM 요소에 이벤트 부착)
@@ -49,9 +50,9 @@ class TodoApp {
     todoEl.id = "todo-" + todo.id
     todoEl.className = "todo"
     todoEl.innerHTML = `
-      <button class="modify"><i class="fas fa-tools"></i></button>
+      <i class="fas fa-tools modify"></i>
       <span style="color: ${todo.color};">${todo.text}</span>
-      <button class="delete"><i class="fas fa-trash-alt"></i></button>
+      <i class="fas fa-trash-alt delete"></i>
     `
     return todoEl
   }
@@ -60,9 +61,10 @@ class TodoApp {
     const today = new Date()
     const month = today.getMonth() + 1
     const date = today.getDate() + 1
+
     if (this.subTitleEl) {
       this.subTitleEl.innerHTML = `
-        ${month}월 ${date}일 <span class="left-count">${this.todosManager.leftTodos}개 남음.</span>
+        ${month}월 ${date}일 <span class="left-count">(${this.todosManager.leftTodos}개 남음)</span>
       `
     }
   }
@@ -70,6 +72,7 @@ class TodoApp {
   bindEvents() {
     this.addTodoFormEl.addEventListener("submit", (evt) => {
       evt.preventDefault()
+
       if (this.mode === "read") {
         this.todosManager.addTodo(this.inputEl.value, false, this.clickedColor)
         this.inputEl.value = ""
@@ -90,7 +93,7 @@ class TodoApp {
       this.clickedId = clickedEl.id.replace("todo-", "")
       const targetTodo = this.todosManager.getList().filter((todo) => todo.id === parseInt(this.clickedId, 10))[0]
       // 수정
-      if (evt.target.className === "fas fa-tools" || evt.target.className === "modify") {
+      if (evt.target.classList.contains("modify")) {
         this.mode = "modify"
         alert("수정 모드로 변경되었습니다.")
         this.inputEl.value = targetTodo.text
@@ -101,7 +104,7 @@ class TodoApp {
         evt.target.className = targetTodo.done ? "complete" : ""
         this.renderLeftTodo()
         // 삭제
-      } else if (evt.target.className === "fas fa-trash-alt" || evt.target.className === "delete") {
+      } else if (evt.target.classList.contains("delete")) {
         this.todosManager.deleteTodo(this.clickedId)
         this.clickedId = ""
         this.renderTodos()
@@ -128,6 +131,10 @@ class TodoApp {
           }
         }
       }
+    })
+    this.resetBtnEl.addEventListener("click", () => {
+      this.todosManager.resetTodos()
+      this.renderTodos()
     })
   }
 }

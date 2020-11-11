@@ -7,83 +7,70 @@ body {
   justify-content: center;
   align-items: center;
   padding-top: 100px;
+  background-color: rgba(0, 0, 0, 0.1);
+  font-family: "Titillium Web", sans-serif;
 }
+/* -------- container -------- */
 .todo-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 700px;
-  padding: 30px 0;
+  width: 380px;
   background: white;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 15px 15px 0 0;
+  overflow: hidden;
 }
 .todo-container > *:not(#todo-list) {
   text-align: center;
 }
-.todo-title {
-  margin-bottom: 20px;
-}
-#todo-form {
-  margin-bottom: 30px;
-}
-#todo-form > p {
-  margin-bottom: 20px;
-}
-#todo-form > .todo__input {
-  padding: 6px 0;
-  margin-right: 20px;
-}
-#todo-form > button {
-  border: none;
-  color: #fff;
-  background: #24a5ed;
-  padding: 10px 20px;
-}
-#todo-list {
-  margin-left: 186px;
-}
-#todo-list > li {
+
+/* -------- header -------- */
+.todo-header {
+  width: 380px;
+  height: 200px;
+  background-image: url("./bg2.jpg");
+  background-size: 100% 200%;
+  background-repeat: no-repeat;
   position: relative;
-  padding-left: 30px;
 }
-#todo-list > li + li {
-  margin-top: 10px;
+.clear {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
-#todo-list > li span {
-  margin-right: 20px;
-  font-size: 1.4em;
+.clear i {
+  font-size: 30px;
+  color: #fff;
+}
+.clear i:hover {
   cursor: pointer;
-}
-#todo-list > li .modify {
-  border: none;
-  background: #007f00;
-  color: #fff;
-  margin-right: 10px;
-  padding: 4px;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translate(0, -50%);
-}
-#todo-list > li .delete {
-  border: none;
-  background: #ff0000;
-  color: #fff;
-  padding: 4px;
-  position: absolute;
-  right: 20%;
-  top: 50%;
-  transform: translate(0, -50%);
+  text-shadow: 1px 3px 5px #000;
+  transform: rotate(45deg);
 }
 
+#date {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: #fff;
+  font-size: 25px;
+  font-family: "Titillium Web", sans-serif;
+}
+
+/* -------- palette -------- */
 .palette {
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px 0;
 }
 .color {
   width: 2rem;
   height: 2rem;
+  border-radius: 50%;
   opacity: 0.5;
   transition: all 0.2s;
   cursor: pointer;
@@ -97,6 +84,135 @@ body {
 .color:active,
 .color.active {
   opacity: 1;
+}
+
+/* -------- content -------- */
+.content {
+  width: 380px;
+  height: 350px;
+  max-height: 350px;
+  background-color: #fff;
+  overflow: auto;
+}
+.content::-webkit-scrollbar {
+  display: none;
+}
+.content ul {
+  padding: 0;
+  margin: 0;
+}
+
+#todo-list > li {
+  width: 380px;
+  height: 45px;
+  min-height: 45px;
+  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#todo-list > li span {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+  left: 50px;
+  top: 50%;
+  transform: translate(0, -50%);
+  background-color: #fff;
+  max-width: 285px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#todo-list > li .modify {
+  background: transparent;
+  border: none;
+  position: absolute;
+  font-size: 25px;
+  padding-left: 5px;
+  left: 15px;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 20px;
+}
+#todo-list > li .modify:hover {
+  color: #007f00;
+}
+
+#todo-list > li .delete {
+  border: none;
+  background: transparent;
+  color: #000;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 25px;
+}
+#todo-list > li .delete:hover {
+  color: #ff0000;
+}
+
+/* -------- add todo -------- */
+#todo-form {
+  position: relative;
+  width: 380px;
+  height: 50px;
+  background-color: #fff;
+  padding: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+#todo-form > .todo__input {
+  position: absolute;
+  left: 60px;
+  top: 50%;
+  transform: translate(0, -50%);
+  height: 35px;
+  width: 310px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  padding-left: 20px;
+}
+#todo-form > button {
+  border: none;
+  color: #fff;
+  background: #24a5ed;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 20px;
+}
+.add-to-do input::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #4162f6;
+  font-family: "Titillium Web", sans-serif;
+  font-size: 20px;
+}
+.add-to-do input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #4162f6;
+  font-family: "Titillium Web", sans-serif;
+  font-size: 20px;
+}
+.add-to-do input:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #4162f6;
+  font-family: "Titillium Web", sans-serif;
+  font-size: 20px;
+}
+.add-to-do input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #4162f6;
+  font-family: "Titillium Web", sans-serif;
+  font-size: 20px;
 }
 
 .complete {

@@ -34,6 +34,10 @@ export class TodosManager {
     this._todos = this._todos.filter((todo) => todo.id !== parseInt(id, 10))
   }
 
+  resetTodos() {
+    this._todos = []
+  }
+
   getList() {
     return this._todos
   }

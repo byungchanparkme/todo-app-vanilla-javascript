@@ -32,6 +32,11 @@ export class TodosManagerWithLocalStorage extends TodosManager {
     this.saveToLocalStorage()
   }
 
+  resetTodos() {
+    super.resetTodos()
+    this.saveToLocalStorage()
+  }
+
   saveToLocalStorage() {
     const todosJSON = JSON.stringify(this._todos)
     localStorage.setItem(TodosManagerWithLocalStorage.STORAGE_KEY, todosJSON)
